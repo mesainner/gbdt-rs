@@ -910,10 +910,8 @@ pub(crate) struct DTNode {
     /// whether the node is a leaf node
     is_leaf: bool,
     /// Used for calculating feature importance; Only used for training, so this field doesn't need to be serialized.
-    #[serde(skip_serializing)]
     impurity: Option<f64>,
     /// Used for calculating feature importance; Only used for training, so this field doesn't need to be serialized.
-    #[serde(skip_serializing)]
     weighted_samples_count: Option<f64>,
 }
 
