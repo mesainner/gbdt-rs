@@ -909,10 +909,23 @@ pub(crate) struct DTNode {
     missing: i8,
     /// whether the node is a leaf node
     is_leaf: bool,
-    /// Used for calculating feature importance; Only used for training, so this field doesn't need to be serialized.
+    /// Used for calculating feature importance; Only used for training
+    #[serde(skip_serializing_if = "get_skip_save_feature_importance")]
     impurity: Option<f64>,
-    /// Used for calculating feature importance; Only used for training, so this field doesn't need to be serialized.
+    /// Used for calculating feature importance; Only used for training
+    #[serde(skip_serializing_if = "get_skip_save_feature_importance")]
     weighted_samples_count: Option<f64>,
+}
+
+/// the skip save feature importance to model json file flag 
+static mut SKIP_SAVE_FEATURE_IMPORTANCE_TO_MODEL: bool = true;
+/// get the skip save feature importance to model json file flag
+pub fn get_skip_save_feature_importance<T: Default + PartialEq>(_t: &T) -> bool {
+    return unsafe { SKIP_SAVE_FEATURE_IMPORTANCE_TO_MODEL };
+}
+// set the skip save feature importance to model json file flag
+pub fn set_skip_save_feature_importance(b: bool) {
+    unsafe { SKIP_SAVE_FEATURE_IMPORTANCE_TO_MODEL = b}
 }
 
 impl DTNode {
